@@ -1,0 +1,78 @@
+/*
+===============================================================================
+Ranking Analysis
+===============================================================================
+Purpose:
+    - To rank items (e.g., products, customers) based on performance or other metrics.
+    - To identify top performers or laggards.
+
+SQL Functions Used:
+    - Window Ranking Functions: RANK(), DENSE_RANK(), ROW_NUMBER(), TOP
+    - Clauses: GROUP BY, ORDER BY
+===============================================================================
+*/
+
+-- # 6 Ranking TOP-N BOTTOM-N
+-- Which 5 products generate the highest revenue?
+select top 5 
+    p.product_name,
+    sum(s.sales_amount) as hightest_revenue
+from dbo.fact_sales as s
+left join dbo.dim_products as p
+    on s.product_key = p.product_key
+group by p.product_name
+order by hightest_revenue desc ;
+
+-- What are the 5 worst-performing products in terms of sales?
+select top 5 
+    p.product_name,
+    sum(s.sales_amount) as hightest_revenue
+from dbo.fact_sales as s
+left join dbo.dim_products as p
+    on s.product_key = p.product_key
+group by p.product_name
+order by hightest_revenue ;
+
+-- With Window function is more complitate
+select *
+from (
+select 
+    p.product_name,
+    sum(s.sales_amount) as hightest_revenue,
+    ROW_NUMBER() over(order by sum(s.sales_amount) desc) as rank_products
+from dbo.fact_sales as s
+left join dbo.dim_products as p
+    on s.product_key = p.product_key
+group by  p.product_name 
+) t 
+where rank_products < = 5 ;
+
+-- Find the top 10 customers who have generated the highest revenue
+select Top 10
+    c.customer_key,
+    c.first_name,
+    c.last_name,
+    sum(sales_amount) as highest_revenue
+from dbo.fact_sales as s
+left join dbo.dim_customers as c
+on s.customer_key = c.customer_key
+group by  
+    c.customer_key,
+    c.first_name,
+    c.last_name
+order by highest_revenue desc
+
+-- The 3 customers with the fewest orders placed
+select Top 3
+    c.customer_key,
+    c.first_name,
+    c.last_name,
+    count(distinct(s.order_number)) as total_order
+from dbo.fact_sales as s
+left join dbo.dim_customers as c
+on s.customer_key = c.customer_key
+group by  
+    c.customer_key,
+    c.first_name,
+    c.last_name
+order by total_order

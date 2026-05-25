@@ -1,0 +1,44 @@
+/*
+===============================================================================
+Measures Exploration (Key Metrics)
+===============================================================================
+Purpose:
+    - To calculate aggregated metrics (e.g., totals, averages) for quick insights.
+    - To identify overall trends or spot anomalies.
+
+SQL Functions Used:
+    - COUNT(), SUM(), AVG()
+===============================================================================
+*/
+
+-- # 4 Measure Exploration
+-- Find the total sales
+-- Find how many items are sold 
+-- Find the averafe selling price
+-- Find the total number of orders
+-- Find the total number of product
+-- Find the total number of customers
+-- Find the total number of customers that has placed an order
+SELECT 
+    SUM(sales_amount) AS TotalSales,
+    SUM(quantity) AS TotalItemsSold,
+    AVG(price) AS AverageSellingPrice,
+    COUNT(DISTINCT order_number) AS TotalOrders,
+    COUNT(DISTINCT product_key) AS TotalProducts,
+    COUNT(DISTINCT customer_key) AS TotalCustomers,
+    COUNT(DISTINCT CASE WHEN customer_key IS NOT NULL THEN customer_key END) AS CustomersWithOrders
+FROM 
+    dbo.fact_sales;
+
+-- Generate report a report that shoe all key metrics of the business
+select 'TotalSales' as mearsure_name,Sum(sales_amount) as measure_value from dbo.fact_sales
+    union all
+select 'TotalItemsSold' as mearsure_name,Sum(quantity) as measure_value from dbo.fact_sales
+    union all
+select 'AverageSellingPrice' as mearsure_name,AVG(price) as measure_value from dbo.fact_sales
+    union all
+select 'TotalOrders' as mearsure_name,COUNT(DISTINCT product_key) as measure_value from dbo.fact_sales
+    union all
+select 'TotalProducts' as mearsure_name,COUNT(DISTINCT customer_key) as measure_value from dbo.fact_sales
+    union all
+select 'CustomersWithOrders' as mearsure_name, COUNT(DISTINCT CASE WHEN customer_key IS NOT NULL THEN customer_key END) measure_value from dbo.fact_sales;
