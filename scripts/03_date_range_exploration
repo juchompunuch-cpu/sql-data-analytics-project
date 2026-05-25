@@ -1,0 +1,29 @@
+/*
+===============================================================================
+Date Range Exploration 
+===============================================================================
+Purpose:
+    - To determine the temporal boundaries of key data points.
+    - To understand the range of historical data.
+
+SQL Functions Used:
+    - MIN(), MAX(), DATEDIFF()
+===============================================================================
+*/
+
+-- # 3 Date Exploration
+-- Find the date of the first and last order
+select 
+    min(order_date) first_order_date ,
+    max(order_date) as last_order_date,
+    DATEDIFF(year,min(order_date),max(order_date)) as order_range_year,
+    DATEDIFF(month,min(order_date),max(order_date)) as order_month_year
+from dbo.fact_sales ;
+
+-- Find the yougest and the oldest customer 
+select
+    min(birthdate) first_order_date ,
+    datediff(year,min(birthdate),Getdate()) as Oldest_year,
+    datediff(year,max(birthdate),Getdate()) as Youger_year,
+    max(birthdate) as last_order_date
+from dbo.dim_customers ;
