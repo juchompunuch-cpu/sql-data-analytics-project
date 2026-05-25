@@ -11,7 +11,7 @@ A comprehensive log summarizing data organization from SQL Server and Repository
     * *Cause:* The folder name contains spaces (e.g., `DATA WITH BRASS`), causing Bash to interpret the path as multiple separate arguments.
     * *Solution:* Wrap the entire absolute or relative path in double quotation marks:
         ```bash
-        cd "C:\Users\jucho\OneDrive\Desktop\DATA WITH BRASS\Project"
+        cd "C:\Users\jucho\Project"
         ```
 * **Error: `[rejected] main -> main (fetch first)`**
     * *Cause:* The remote GitHub repository contains new updates or commits that do not exist on the local machine yet.
