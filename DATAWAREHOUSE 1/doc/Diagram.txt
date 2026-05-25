@@ -1,0 +1,48 @@
+erDiagram
+    %% --- Sales Data Mart (Star Schema) ---
+
+    %% 1. เชื่อม PK Customer_key ไปยัง FK2 ใน Fact Sales
+    "gold.dim_customers" ||--o{ "gold.fact_sales" : "customer_key (FK2)"
+    
+    %% 2. เชื่อม PK Product_key จาก Dim Product ไปยัง FK1 ใน Fact Sales
+    "gold.dim_products" ||--o{ "gold.fact_sales" : "product_key (FK1)"
+
+    "gold.dim_customers" {
+        int customer_key PK
+        string customer_id 
+        string customer_number 
+        string first_name 
+        string last_name 
+        string country 
+        string marital_status 
+        string gender 
+        string birthdate 
+        string country_repeat 
+    }
+
+    "gold.fact_sales" {
+        int sales_id PK
+        int product_key FK "FK1"
+        int customer_key FK "FK2"
+        string order_number 
+        string order_date 
+        string shipping_date 
+        string due_date 
+        float sales_amount 
+        int quantity 
+        float price 
+    }
+
+    "gold.dim_products" {
+        int product_key PK
+        string product_id 
+        string product_number 
+        string product_name 
+        int category_id 
+        string category 
+        string subcategory 
+        string maintenance 
+        float cost 
+        string product_line 
+        string start_date 
+    }

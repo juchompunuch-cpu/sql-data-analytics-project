@@ -1,0 +1,94 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'background': '#000000',
+    'primaryColor': '#ffffff',
+    'mainBkg': '#000000',
+    'nodeBorder': '#ffffff',
+    'textColor': '#ffffff',
+    'lineColor': '#ffffff',
+    'subgraphTitleColor': '#ffffff'
+  }
+}}%%
+flowchart LR
+
+    %% --- Master Canvas ---
+    subgraph Canvas ["&nbsp;"]
+        direction TB
+        
+        Title[<br/><span style='font-size:35px; color:#FFFFFF; font-weight:bold; letter-spacing: 2px;'>HIGH LEVEL ARCHITECTURE</span><br/>]
+        style Title fill:none,stroke:none
+
+        subgraph MainFlow [" "]
+            direction LR
+
+            %% 1. Source Section
+            subgraph Source ["<span style='color:#FFFFFF'>Source</span>"]
+                direction TB
+                SourceIcons["<div style='text-align:center; padding:10px; color:#FFFFFF;'><br/>📁 <b>CRM</b><br/><br/>📁 <b>ERP</b><br/><br/></div>"]
+                SourceInfo["<div style='text-align:left; border-top:1px solid #FFFFFF; padding-top:10px; color:#FFFFFF;'><b>Type:</b> CSV Files<br/><b>I/F:</b> Folders</div>"]
+                
+                SourceIcons --- SourceInfo
+            end
+
+            %% 2. Data Warehouse Section
+            subgraph DWH ["<span style='color:#FFFFFF'>Data Warehouse</span>"]
+                direction LR
+                
+                %% --- Bronze Layer (ปรับเป็นเส้นขาว) ---
+                subgraph Bronze ["<span style='color:#FFFFFF'>BRONZE LAYER</span>"]
+                    direction TB
+                    B_Card["<div style='text-align:left; color:#FFFFFF;'><b>⚙️ Process:</b> Stored Procedure<br/><b>🗄️ Status:</b> Raw Data<hr style='border:0.5px solid #FFFFFF'/><b>🔹 Object Type:</b> Tables<br/><b>📥 Load Strategy:</b><br/>&nbsp;&nbsp;• Batch Processing<br/>&nbsp;&nbsp;• Full Load<br/>&nbsp;&nbsp;• Truncate & Insert<hr style='border:0.5px solid #FFFFFF'/><b>🚫 Transformations:</b> None<br/><b>🏗️ Data Model:</b> None (as-is)</div>"]
+                end
+
+                %% --- Silver Layer (ปรับเป็นเส้นขาว) ---
+                subgraph Silver ["<span style='color:#FFFFFF'>SILVER LAYER</span>"]
+                    direction TB
+                    S_Card["<div style='text-align:left; color:#FFFFFF;'><b>⚙️ Process:</b> Stored Procedure<br/><b>✨ Status:</b> Cleaned / Standardized<hr style='border:0.5px solid #FFFFFF'/><b>🔹 Object Type:</b> Tables<br/><b>📥 Load Strategy:</b><br/>&nbsp;&nbsp;• Batch Processing<br/>&nbsp;&nbsp;• Full Load<br/>&nbsp;&nbsp;• Truncate & Insert<hr style='border:0.5px solid #FFFFFF'/><b>🔄 Transformations:</b><br/>&nbsp;&nbsp;• Data Cleansing<br/>&nbsp;&nbsp;• Standardization<br/>&nbsp;&nbsp;• Normalization<br/>&nbsp;&nbsp;• Derived Columns / Enrichment<br/><b>🏗️ Data Model:</b> None (as-is)</div>"]
+                end
+
+                %% --- Gold Layer (ปรับเป็นเส้นขาว) ---
+                subgraph Gold ["<span style='color:#FFFFFF'>GOLD LAYER</span>"]
+                    direction TB
+                    G_Card["<div style='text-align:left; color:#FFFFFF;'><b>💎 Status:</b> Business-Ready<hr style='border:0.5px solid #FFFFFF'/><b>🔹 Object Type:</b> Views<br/><b>📤 Load Strategy:</b> No Load (Virtual)<hr style='border:0.5px solid #FFFFFF'/><b>⚡ Transformations:</b><br/>&nbsp;&nbsp;• Data Integrations<br/>&nbsp;&nbsp;• Aggregations<br/>&nbsp;&nbsp;• Business Logics<hr style='border:0.5px solid #FFFFFF'/><b>🏗️ Data Model:</b><br/>&nbsp;&nbsp;• Star Schema<br/>&nbsp;&nbsp;• Flat / Aggregated Tables</div>"]
+                end
+                
+                Bronze ==> Silver ==> Gold
+            end
+
+            %% 3. Consume Section
+            subgraph Consume ["<span style='color:#FFFFFF'>Consume</span>"]
+                direction TB
+                C_Icons["<div style='text-align:left; line-height:2.2; color:#FFFFFF;'><br/>📊 <b>BI & Reporting</b><br/>🎯 <b>Ad-Hoc Analysis</b><br/>🔍 <b>SQL Queries</b><br/>🤖 <b>Machine Learning</b><br/><br/></div>"]
+            end
+
+            %% Global Connections
+            Source ==> DWH
+            DWH ==> Consume
+        end
+    end
+
+    %% --- STYLING (All White on Black) ---
+    style Canvas fill:#000000,stroke:#FFFFFF,stroke-width:2px
+    style MainFlow fill:none,stroke:none
+    
+    %% กล่องหลัก (Solid White Line)
+    style Source fill:none,stroke:#FFFFFF,stroke-width:1px
+    style DWH fill:none,stroke:#FFFFFF,stroke-width:1px
+    style Consume fill:none,stroke:#FFFFFF,stroke-width:1px
+    
+    %% กล่องเลเยอร์ (ปรับเป็นสีขาวทั้งหมด)
+    style Bronze fill:none,stroke:#FFFFFF,stroke-width:1px
+    style Silver fill:none,stroke:#FFFFFF,stroke-width:1px
+    style Gold fill:none,stroke:#FFFFFF,stroke-width:1px
+    
+    %% เคลียร์พื้นหลังการ์ด
+    style B_Card fill:none,stroke:none
+    style S_Card fill:none,stroke:none
+    style G_Card fill:none,stroke:none
+    style SourceIcons fill:none,stroke:none
+    style SourceInfo fill:none,stroke:none
+    style C_Icons fill:none,stroke:none
+
+    %% เส้นลูกศร (White)
+    linkStyle default stroke:#FFFFFF,stroke-width:2px

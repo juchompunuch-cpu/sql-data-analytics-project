@@ -1,0 +1,69 @@
+
+graph LR
+    subgraph Main_Canvas [Data Flow Architecture]
+        direction LR
+
+        %% Section: Sources
+        subgraph Sources
+            direction TB
+            CRM[(CRM)]
+            ERP[(ERP)]
+        end
+
+        %% Section: Bronze Layer
+        subgraph Bronze_Layer [Bronze Layer]
+            direction TB
+            B1[crm_sales_details]
+            B2[crm_cust_info]
+            B3[crm_prd_info]
+            B4[erp_cust_az12]
+            B5[erp_loc_a101]
+            B6[erp_px_cat_g1v2]
+        end
+
+        %% Section: Silver Layer
+        subgraph Silver_Layer [Silver Layer]
+            direction TB
+            S1[crm_sales_details]
+            S2[crm_cust_info]
+            S3[crm_prd_info]
+            S4[erp_cust_az12]
+            S5[erp_loc_a101]
+            S6[erp_px_cat_g1v2]
+        end
+
+        %% Section: Gold Layer
+        subgraph Gold_Layer [Gold Layer]
+            direction TB
+            G1[fact_sales]
+            G2[dim_customers]
+            G3[dim_products]
+        end
+
+        %% Connections
+        CRM --> B1 & B2 & B3
+        ERP --> B4 & B5 & B6
+
+        B1 --> S1
+        B2 --> S2
+        B3 --> S3
+        B4 --> S4
+        B5 --> S5
+        B6 --> S6
+
+        S1 --> G1
+        S2 --> G2
+        S4 --> G2
+        S3 --> G3
+        S5 --> G2
+        S6 --> G3
+    end
+
+    %% Global Styling
+    style Main_Canvas fill:#1a1a1a,stroke:#ffffff,color:#ffffff,stroke-width:4px
+    
+    %% Internal Styling
+    style Sources fill:#000000,stroke:#333333,color:#ffffff,stroke-width:2px
+    style Bronze_Layer fill:#000000,stroke:#d4a017,color:#ffffff,stroke-width:2px
+    style Silver_Layer fill:#000000,stroke:#7f7f7f,color:#ffffff,stroke-width:2px
+    style Gold_Layer fill:#000000,stroke:#d4a017,color:#ffffff,stroke-width:2px
