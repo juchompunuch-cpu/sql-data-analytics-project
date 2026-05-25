@@ -1,0 +1,33 @@
+/*
+===============================================================================
+Data Segmentation Analysis
+===============================================================================
+Purpose:
+    - To group data into meaningful categories for targeted insights.
+    - For customer segmentation, product categorization, or regional analysis.
+
+SQL Functions Used:
+    - CASE: Defines custom segmentation logic.
+    - GROUP BY: Groups data into segments.
+===============================================================================
+*/
+
+-- 10 Perfomance Analysis 
+-- Which categories contribute the most to overall sales?
+with category_sales as (
+select
+	p.category ,
+	sum(f.sales_amount) as total_sales
+from dbo.fact_sales as f
+left join dbo.dim_products as p
+	on f.product_key = p.product_key
+Group by p.category 
+)
+
+select
+	category ,
+	total_sales,
+	sum(total_sales) over() as overall_sales,
+	concat(Round((cast(total_sales as float) / sum(total_sales) over()) * 100,2),'%') as percentage_of_tatal
+from category_sales
+order by total_sales desc ;
