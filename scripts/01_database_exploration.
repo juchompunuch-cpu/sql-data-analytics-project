@@ -1,0 +1,22 @@
+/*
+===============================================================================
+Database Exploration
+===============================================================================
+Purpose:
+    - To explore the structure of the database, including the list of tables and their schemas.
+    - To inspect the columns and metadata for specific tables.
+
+Table Used:
+    - INFORMATION_SCHEMA.TABLES
+    - INFORMATION_SCHEMA.COLUMNS
+===============================================================================
+*/
+
+-- # 1 Database Exploration 
+-- Explore all project in the Database 
+select * from INFORMATION_SCHEMA.TABLES ;
+
+
+-- Expolre All columns in a database 
+select * from INFORMATION_SCHEMA.COLUMNS
+where table_name = 'dim_customer' ;
